@@ -1,0 +1,26 @@
+.nav-pills a{
+	color:#ffffff;
+	font-weight: 300;
+}
+.nav-item:hover{
+	background: #656565;
+}
+.nav-item{
+	border-bottom: 1px solid #474747;
+    box-shadow: inset 1px 3px 9px -6px #bababa;
+    margin: 0px !important;
+    border-top: 1px solid #333;
+}
+.nav-item:last-child{
+	box-shdow: 1px 3px 9px -6px #bababa;
+}
+.btn-outline-secondary{
+	color: #fff;
+	border-color: #fff;
+}
+.btn-outine-secondary:hover{
+	/*color: #fff;*/
+	border-color: #fff;
+	color: red !important; 
+	background: rgba(255,255,255,0.2);
+}

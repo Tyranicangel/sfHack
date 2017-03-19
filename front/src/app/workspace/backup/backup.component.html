@@ -1,0 +1,83 @@
+<nav class="navbar navbar-light">
+	<span class="navbar-brand">
+		Backups
+	</span>
+	<span class="navbar-text float-xs-right">
+		<button class="btn btn-outline-success" (click)="add()">Add</button>
+	</span>
+</nav>
+<div class="container">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>SNo</th>
+				<th>Application</th>
+				<th>Frequency</th>
+				<th>Details</th>
+				<th>Edit</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let b of backuplist;let i=index">
+				<td>{{i+1}}</td>
+				<td *ngFor="let a of applist | idfilter:b.application">{{a.name}}</td>
+				<td>{{types[b.backuptype]}}</td>
+				<td>{{frequencylist[b.frequency]}}</td>
+				<td>{{b.details}}</td>
+				<td><button class="btn btn-outline-info" (click)="edit(b)">Edit</button></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Backup</h4>
+      </div>
+       <form (ngSubmit)="save()">
+      <div class="modal-body">
+        <div class="container">
+        		<div class="form-group">
+    				<label for="" class="form-label">Application</label>
+					<select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="backup.application" required>
+						<option value="">Select</option>
+						<option *ngFor="let a of applist" value="{{a._id}}">{{a.name}}</option>
+					</select>
+        		</div>
+        		<div class="form-group">
+    				<label for="" class="form-label">Type</label>
+					<select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="backup.backuptype" required>
+						<option value="">Select</option>
+						<option value="1">Cloud Backup</option>
+						<option value="2">Tape Backup</option>
+						<option value="3">Local Storage Backup</option>
+					</select>
+        		</div>
+        		<div class="form-group">
+    				<label for="" class="form-label">Frequency</label>
+					<select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="backup.frequency" required>
+						<option value="">Select</option>
+						<option value="1">Weekly</option>
+						<option value="2">Daily</option>
+						<option value="3">Realtime</option>
+					</select>
+        		</div>
+        		<div class="form-group">
+    				<label for="" class="form-label">Details</label>
+					<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="backup.details" required>
+        		</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.hide()">Close</button>
+        <button type="button" *ngIf="backup._id!=''" class="btn btn-danger" (click)="remove()">Remove</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

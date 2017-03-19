@@ -1,0 +1,56 @@
+<div class="full-screen" style="display: flex;flex-flow: row;">
+	<div class="container left_part">
+		<nav class="navbar navbar-light">
+			<a routerLink="" class="navbar-brand">
+				<img src="assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+				Disaster Planning
+			</a>
+			<span class="navbar-text float-xs-right hidden-lg-up">
+				<a routerLink="/login" class="btn btn-outline-success">Login</a>
+			</span>
+		</nav>
+		<div class="container" style="padding-top: 20px;">
+			<div class="row align-center"><span style="font-weight: 300;font-size: 2.5rem;">Create your company</span></div>
+			<form (ngSubmit)="create()">
+				<div class="form-group">
+					<label for="companyName">Name</label>
+					<input type="text" class="form-control" id="companyName" placeholder="Enter your company name..." [(ngModel)]="company.name" [ngModelOptions]="{standalone: true}" required>
+				</div>
+				<div class="form-group">
+					<label for="companySize">Size</label>
+					<select class="form-control" id="companySize" [(ngModel)]="company.size" [ngModelOptions]="{standalone: true}" required>
+						<option value="1">less than 100</option>
+						<option value="2">100 to 500</option>
+						<option value="3">500 to 1000</option>
+						<option value="4">greater than 1000</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="companyDomain">Domain</label>
+					<div class="row">
+						<div class="col-xs-7">
+							<input type="text" class="form-control" id="companyDomain" placeholder="example" [(ngModel)]="company.domain" [ngModelOptions]="{standalone: true}" required>
+						</div>
+						<div class="col-xs-1">
+							<b>.</b>
+						</div>
+						<div class="col-xs-4">
+							<input type="text" class="form-control" id="companyExt" placeholder="com" [(ngModel)]="company.extension" [ngModelOptions]="{standalone: true}" required>
+						</div>
+					</div>
+				</div>
+				<div class="form-group text-xs-center" style="padding-top: 10px;">
+					<button type="submit" class="btn btn-success">Next <i style="font-weight: 300;" class="fa fa-angle-right" aria-hidden="true"></i></button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="container hidden-md-down" style="background: #21b2fe">
+		<nav class="navbar navbar-dark" style="color: #ffffff !important;">
+			<span class="navbar-text float-xs-right">
+				Already joined your team?
+				<a routerLink="/login" style="color: #ffffff !important;" class="btn btn-outline-success">Login</a>
+			</span>
+		</nav>
+	</div>
+</div>

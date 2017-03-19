@@ -1,0 +1,207 @@
+<nav class="navbar navbar-light">
+	<span class="navbar-brand">
+		Application BIA
+	</span>
+	<span class="navbar-text float-xs-right">
+		<button class="btn btn-outline-success" (click)="add()">Add</button>
+	</span>
+</nav>
+<div class="container">
+	<table class="table" style="margin-top: 10px;">
+		<tbody *ngFor="let a of applist;let i=index">
+			<tr class="thead-default">
+				<th colspan="3">Application : {{a.name}} : <span *ngFor="let l of locationlist | idfilter:a.location">{{l.name}}</span></th>
+				<th style="text-align: right;"><button class="btn btn-outline-info" (click)="edit(a)">Edit</button></th>
+			</tr>
+			<tr>
+				<th scope="row">Type</th>
+				<td>{{typelist[a.type]}}</td>
+				<th scope="row">Description</th>
+				<td>{{a.description}}</td>
+			</tr>
+			<tr>
+				<th scope="row">Criticality</th>
+				<td>{{criticallist[a.criticality]}}</td>
+				<th scope="row">Business Owner</th>
+				<td>
+					<ul class="list-group" style="list-style: none;">
+						<li *ngFor="let b of stakeholders | stakeholderfilter:a.businessowner">{{b.name}}</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">IT SME</th>
+				<td>
+					<ul class="list-group" style="list-style: none;">
+						<li *ngFor="let b of stakeholders | stakeholderfilter:a.itsme">{{b.name}}</li>
+					</ul>
+				</td>
+				<th scope="row">Vendor SME</th>
+				<td>
+					<ul class="list-group" style="list-style: none;">
+						<li *ngFor="let b of stakeholders | stakeholderfilter:a.vendorsme">{{b.name}}</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">Support Hours</th>
+				<td>{{a.supporthours}}</td>
+				<th scope="row">Support Cover</th>
+				<td>{{a.supportcover}}</td>
+			</tr>
+			<tr>
+				<th scope="row">RTO</th>
+				<td>{{a.rto}}</td>
+				<th scope="row">RPO</th>
+				<td>{{a.rpo}}</td>
+			</tr>
+			<tr>
+				<th scope="row">Security</th>
+				<td>{{a.security}}</td>
+				<th scope="row">Workaround</th>
+				<td>{{a.workaround}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Application BIA</h4>
+      </div>
+       <form (ngSubmit)="save()">
+      <div class="modal-body">
+        <div class="container">
+        		<div class="form-group row">
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Application</label>
+        				<div class="col-xs-8">
+							<input class="form-control" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.name" required>
+						</div>
+        			</div>
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Location</label>
+        				<div class="col-xs-8">
+							<select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.location" required>
+								<option value="">Select</option>
+								<option *ngFor="let s of locationlist" value="{{s._id}}">{{s.name}}</option>
+							</select>
+						</div>
+        			</div>
+        		</div>
+        		<div class="form-group row">
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Type</label>
+        				<div class="col-xs-8">
+							<select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.type" required>
+								<option value="">Select</option>
+								<option value="1">ERP</option>
+								<option value="2">MRP</option>
+								<option value="3">CRM</option>
+								<option value="4">Other</option>
+							</select>
+						</div>
+        			</div>
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Description</label>
+        				<div class="col-xs-8">
+							<input class="form-control" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.description" required>
+						</div>
+        			</div>
+        		</div>
+        		<div class="form-group row">
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Criticality</label>
+        				<div class="col-xs-8">
+							<select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.criticality" required>
+								<option value="">Select</option>
+								<option value="1">High</option>
+								<option value="2">Medium</option>
+								<option value="3">Low</option>
+							</select>
+						</div>
+        			</div>
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Business Owner</label>
+        				<div class="col-xs-8" required>
+							<select multiple="multiple" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.businessowner" required>
+								<option *ngFor="let s of stakeholders | rolefilter:'2'" value="{{s._id}}">{{s.name}}</option>
+							</select>
+						</div>
+        			</div>
+        		</div>
+        		<div class="form-group row">
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">IT SME</label>
+        				<div class="col-xs-8">
+							<select multiple="multiple" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.itsme" required>
+								<option *ngFor="let s of stakeholders | rolefilter:'4'" value="{{s._id}}">{{s.name}}</option>
+							</select>
+						</div>
+        			</div>
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Vendor SME</label>
+        				<div class="col-xs-8">
+							<select multiple="multiple" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.vendorsme" required>
+								<option *ngFor="let s of stakeholders | rolefilter:'5'" value="{{s._id}}">{{s.name}}</option>
+							</select>
+						</div>
+        			</div>
+        		</div>
+        		<div class="form-group row">
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Support Hours</label>
+        				<div class="col-xs-8">
+							<input class="form-control" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.supporthours" required>
+						</div>
+        			</div>
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Support Cover</label>
+        				<div class="col-xs-8">
+							<input class="form-control" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.supportcover" required>
+						</div>
+        			</div>
+        		</div>
+        		<div class="form-group row">
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">RTO</label>
+        				<div class="col-xs-8">
+							<input class="form-control" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.rto" required>
+						</div>
+        			</div>
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">RPO</label>
+        				<div class="col-xs-8">
+							<input class="form-control" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.rpo" required>
+						</div>
+        			</div>
+        		</div>
+        		<div class="form-group row">
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Security</label>
+        				<div class="col-xs-8">
+							<input class="form-control" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.security" required>
+						</div>
+        			</div>
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Workaround</label>
+        				<div class="col-xs-8">
+							<input class="form-control" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="app.workaround" required>
+						</div>
+        			</div>
+        		</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.hide()">Close</button>
+        <button type="button" *ngIf="app._id!=''" class="btn btn-danger" (click)="remove()">Remove</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

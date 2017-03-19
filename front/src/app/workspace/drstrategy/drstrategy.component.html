@@ -1,0 +1,44 @@
+<nav class="navbar navbar-light">
+	<span class="navbar-brand">
+		Disaster recovery strategy
+	</span>
+	<span class="navbar-text float-xs-right">
+		<button class="btn btn-outline-info" (click)="edit()">Edit</button>
+	</span>
+</nav>
+<div class="container">
+	<ul class="list-group" *ngIf="!showForm">
+		<li class="list-group-item" *ngFor="let strat of strats">{{strat.description}}</li>
+	</ul>
+	<form class="col-xs-8" style="padding-top: 20px;" *ngIf="showForm" (ngSubmit)="saveForm()">
+		<div class="form-group" *ngFor="let strat of strats;let i=index">
+			<div class="row">
+				<div class="col-xs-10">
+					<textarea name="" id="" rows="2" class="form-control" [(ngModel)]="strat.description" [ngModelOptions]="{standalone: true}" placeholder="Enter your strategy..." required></textarea>
+				</div>
+				<div class="col-xs-2">
+					<button class="btn btn-outline-danger" [disabled]="strats.length==1" (click)="remove(i)"><i style="font-weight: 300;" class="fa fa-times" aria-hidden="true"></i></button>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<button type="button" class="btn btn-info" (click)="add()"><i class="fa fa-plus" aria-hidden="true"></i>Add more</button>
+			<button type="submit" class="btn btn-success">Save</button>
+		</div>
+	</form>
+</div>
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content alert alert-danger">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title alert-heading">Error</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{errorMessage}}</p>
+      </div>
+    </div>
+  </div>
+</div>

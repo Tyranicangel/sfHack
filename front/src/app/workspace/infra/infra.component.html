@@ -1,0 +1,154 @@
+<nav class="navbar navbar-light">
+	<span class="navbar-brand">
+		Critical Infrastructure
+	</span>
+	<span class="navbar-text float-xs-right">
+		<button class="btn btn-outline-success" (click)="add()">Add</button>
+	</span>
+</nav>
+<div class="container">
+	<div *ngFor="let ilist of infralist">
+	<!-- <span class="lead" *ngIf="ilist.infralist.length>0">{{ilist.infratype.name}}</span> -->
+	<table class="table" style="margin-top: 10px;">
+		<tbody *ngFor="let inf of ilist.infralist;let i=index">
+			<tr class="thead-default">
+				<th colspan='2'>{{ilist.infratype.name}} : {{inf.name}} : <span *ngFor="let l of locationlist | idfilter:inf.location">{{l.name}}</span>
+				</th>
+				<th style="text-align: right;"><button class="btn btn-outline-info" (click)="edit(inf)">Edit</button></th>
+			</tr>
+			<tr>
+				<td>Business Owner</td>
+				<td colspan="2">
+					<span *ngFor="let b of stakeholderList | stakeholderfilter:inf.businessowner">{{b.name}} </span>
+				</td>
+			</tr>
+			<tr>
+				<td>Vendor SME</td>
+				<td colspan="2">
+					<span *ngFor="let b of stakeholderList | stakeholderfilter:inf.vendorsme">{{b.name}} </span>
+				</td>
+			</tr>
+			<tr>
+				<td>IT SME</td>
+				<td colspan="2">
+					<span *ngFor="let b of stakeholderList | stakeholderfilter:inf.itsme">{{b.name}} </span>
+				</td>
+			</tr>
+			<tr>
+				<th>Feature</th>
+				<th></th>
+				<th>Comments</th>
+			</tr>
+			<tr *ngFor="let itm of inf.items">
+				<td>{{itm.name}}</td>
+				<td *ngIf="itm.check=='true'"><i style="color:green;font-size: 1.5em;" class="fa fa-check" aria-hidden="true"></i></td>
+				<td *ngIf="itm.check=='false'"><i style="color:red;font-size: 1.5em;" class="fa fa-times" aria-hidden="true"></i></td>
+				<td>{{itm.comments}}</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+</div>
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Infrastructure</h4>
+      </div>
+       <form (ngSubmit)="save()">
+      <div class="modal-body">
+        <div class="container">
+        		<div class="form-group row">
+        			<label class="col-xs-2 col-form-label">Type</label>
+					<div class="col-xs-4">
+						<select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="infra.type" (ngModelChange)="changed()" required [disabled]="infra._id!=''">
+							<option value="">Select</option>
+							<option *ngFor="let default of defaults" value="{{default.infratype._id}}">{{default.infratype.name}}</option>
+						</select>
+					</div>
+        		</div>
+        		<div class="form-group row">
+        			<label class="col-xs-2 col-form-label">Name</label>
+					<div class="col-xs-4">
+						<input class="form-control" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="infra.name">
+					</div>
+        		</div>
+        		<div class="form-group row">
+        			<label class="col-xs-2 col-form-label">Location</label>
+					<div class="col-xs-4">
+						<select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="infra.location" required>
+							<option value="">Select</option>
+							<option *ngFor="let location of locationlist" value="{{location._id}}">{{location.name}}</option>
+						</select>
+					</div>
+        		</div>
+        		<div class="form-group row">
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Business Owner</label>
+        				<div class="col-xs-8" required>
+							<select multiple="multiple" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="infra.businessowner" required>
+								<option *ngFor="let s of stakeholderList | rolefilter:'2'" value="{{s._id}}">{{s.name}}</option>
+							</select>
+						</div>
+        			</div>
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">IT SME</label>
+        				<div class="col-xs-8">
+							<select multiple="multiple" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="infra.itsme" required>
+								<option *ngFor="let s of stakeholderList | rolefilter:'4'" value="{{s._id}}">{{s.name}}</option>
+							</select>
+						</div>
+        			</div>
+        		</div>
+        		<div class="form-group row">
+        			<div class="col-xs-6 row">
+        				<label for="" class="col-xs-4 col-form-label">Vendor SME</label>
+        				<div class="col-xs-8">
+							<select multiple="multiple" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="infra.vendorsme" required>
+								<option *ngFor="let s of stakeholderList | rolefilter:'5'" value="{{s._id}}">{{s.name}}</option>
+							</select>
+						</div>
+        			</div>
+        		</div>
+        		<div class="form-group row" *ngIf="infra.items.length>0">
+        			<label class="col-xs-4 col-form-label">Item</label>
+        			<label class="col-xs-1 col-form-label">Yes</label>
+        			<label class="col-xs-1 col-form-label">No</label>
+        			<label class="col-xs-4 col-form-label">Comments</label>
+        			<label class="col-xs-2 col-form-label"><button class="btn btn-outline-info" (click)="additem()" type="button">Add</button></label>
+        		</div>
+        		<div class="form-group row" *ngFor="let item of infra.items;let i=index">
+        			<div class="col-xs-4">
+						<input class="form-control" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.name" required>
+					</div>
+					<div class="col-xs-1">
+						<label class="form-check-inline">
+							<input class="form-check-input" type="radio" name="inlineRadioOptions{{i}}" id="inlineRadio1" value="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.check" required>
+						</label>
+					</div>
+					<div class="col-xs-1">
+						<label class="form-check-inline">
+							<input class="form-check-input" type="radio" name="inlineRadioOptions{{i}}" id="inlineRadio1" value="false" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.check" required>
+						</label>
+					</div>
+					<div class="col-xs-4">
+						<input class="form-control" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.comments">
+					</div>
+					<div class="col-xs-2">
+						<button class="btn btn-outline-danger" [disabled]="infra.items.length==1" (click)="removeitem(i)" type="button">&times;</button>
+					</div>
+        		</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.hide()">Close</button>
+        <button type="button" *ngIf="infra._id!=''" class="btn btn-danger" (click)="remove()">Remove</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

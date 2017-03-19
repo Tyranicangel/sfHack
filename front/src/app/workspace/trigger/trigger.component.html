@@ -1,0 +1,146 @@
+<nav class="navbar navbar-light">
+	<span class="navbar-brand">
+		DR Trigger
+	</span>
+	<span class="navbar-text float-xs-right">
+		<button class="btn btn-outline-success" (click)="add()">Add</button>
+	</span>
+</nav>
+<div class="container">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>SNo</th>
+				<th>Location</th>
+				<th>Applications</th>
+				<th>Infrastructure</th>
+				<th>Business Owners</th>
+				<th>IT SME</th>
+				<th>Vendor SME</th>
+				<th>Created On</th>
+				<th>Status</th>
+				<th>Edit</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let t of triggerlist;let i=index">
+				<td>{{i+1}}</td>
+				<td *ngFor="let a of locationlist | idfilter:t.location">{{a.name}}</td>
+				<td>
+					<ul class="list-group" style="list-style: none;">
+						<li *ngFor="let b of applist | stakeholderfilter:t.application">{{b.name}}</li>
+					</ul>
+				</td>
+				<td>
+					<ul class="list-group" style="list-style: none;">
+						<li *ngFor="let b of infralist | stakeholderfilter:t.infra">{{b.name}}</li>
+					</ul>
+				</td>
+				<td>
+					<ul class="list-group" style="list-style: none;">
+						<li *ngFor="let b of stakeholderlist | stakeholderfilter:t.businessowner">{{b.name}}</li>
+					</ul>
+				</td>
+				<td>
+					<ul class="list-group" style="list-style: none;">
+						<li *ngFor="let b of stakeholderlist | stakeholderfilter:t.itsme">{{b.name}}</li>
+					</ul>
+				</td>
+				<td>
+					<ul class="list-group" style="list-style: none;">
+						<li *ngFor="let b of stakeholderlist | stakeholderfilter:t.vendorsme">{{b.name}}</li>
+					</ul>
+				</td>
+				<td>
+					{{convert(t.created_at)}}
+				</td>
+				<td *ngIf="t.ended">
+					Ended on {{convert(t.ended)}}
+				</td>
+				<td *ngIf="!t.ended">
+					Active
+				</td>
+				<td><button class="btn btn-outline-info" (click)="edit(t)" [disabled]="t.ended">Edit</button></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">DR Trigger</h4>
+      </div>
+       <form (ngSubmit)="save()">
+      <div class="modal-body">
+        <div class="container">
+    		<div class="form-group row">
+    			<div class="col-xs-6 row">
+    				<label for="" class="col-xs-4 col-form-label">Location</label>
+    				<div class="col-xs-8">
+						<select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="trigger.location" required>
+							<option value="">Select</option>
+							<option *ngFor="let s of locationlist" value="{{s._id}}">{{s.name}}</option>
+						</select>
+					</div>
+    			</div>
+    		</div>
+    		<div class="form-group row">
+    			<div class="col-xs-6 row">
+    				<label for="" class="col-xs-4 col-form-label">Application</label>
+    				<div class="col-xs-8">
+						<select multiple="multiple" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="trigger.application" (ngModelChange)="changed()">
+							<option *ngFor="let app of applist | locationfilter:trigger.location" value="{{app._id}}">{{app.name}}</option>
+						</select>
+					</div>
+    			</div>
+    			<div class="col-xs-6 row">
+    				<label for="" class="col-xs-4 col-form-label">Infrastructure</label>
+    				<div class="col-xs-8">
+						<select multiple="multiple" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="trigger.infra" (ngModelChange)="changed()">
+							<option *ngFor="let infra of infralist | locationfilter:trigger.location" value="{{infra._id}}">{{infra.name}}</option>
+						</select>
+					</div>
+    			</div>
+    		</div>
+    		<div class="form-group">
+    				<label for="" class="col-xs-4 col-form-label">Comments</label>
+    				<div class="col-xs-8">
+						<textarea name="" id="" rows="2" class="form-control" [(ngModel)]="trigger.comments" [ngModelOptions]="{standalone: true}" placeholder=""></textarea>
+					</div>
+    		</div>
+    		<div class="form-group">
+			    <label for="exampleTextarea"><h4>Stakeholders:</h4></label>
+			 </div>
+			 <div class="form-group" *ngIf="trigger.businessowner.length>0">
+			    <label for="exampleTextarea">Businessowners:</label>
+			    <ul class="list-group" style="list-style: none;">
+					<li *ngFor="let b of stakeholderlist | stakeholderfilter:trigger.businessowner">{{b.name}}</li>
+				</ul>
+			 </div>
+			 <div class="form-group" *ngIf="trigger.businessowner.length>0">
+			    <label for="exampleTextarea">IT SME:</label>
+			    <ul class="list-group" style="list-style: none;">
+					<li *ngFor="let b of stakeholderlist | stakeholderfilter:trigger.itsme">{{b.name}}</li>
+				</ul>
+			 </div>
+			 <div class="form-group" *ngIf="trigger.businessowner.length>0">
+			    <label for="exampleTextarea">Vendor SME:</label>
+			    <ul class="list-group" style="list-style: none;">
+					<li *ngFor="let b of stakeholderlist | stakeholderfilter:trigger.vendorsme">{{b.name}}</li>
+				</ul>
+			 </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.hide()">Close</button>
+        <button type="button" *ngIf="trigger._id!=''" class="btn btn-danger" (click)="end()">End</button>
+        <button type="submit" *ngIf="trigger._id==''" class="btn btn-primary">Initiate</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

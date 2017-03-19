@@ -1,0 +1,35 @@
+<div class="full-screen" style="display: flex;flex-flow: row;">
+	<div class="container" style="max-width: 30%">
+		<nav class="navbar navbar-light">
+			<a routerLink="" class="navbar-brand">
+				<img src="assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+				Disaster Planning
+			</a>
+		</nav>
+		<div class="container" style="padding-top: 20px;">
+			<div class="row align-center"><span style="font-weight: 300;font-size: 2.5rem;">Find your company</span></div>
+			<form action="">
+				<div class="form-group">
+					<label for="companyName">Email</label>
+					<input type="email" class="form-control" id="companyName" placeholder="Enter your company email...">
+				</div>
+				<div class="form-group text-xs-center" style="padding-top: 10px;">
+					<!-- <button type="submit" class="btn btn-success">Next <i style="font-weight: 300;" class="fa fa-angle-right" aria-hidden="true"></i></button> -->
+					<a routerLink="/register" class="btn btn-success">Search</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="container" style="background: #21b2fe">
+		<nav class="navbar navbar-dark" style="color: #ffffff !important;">
+			<span class="navbar-text float-xs-left">
+				Want to register your company?
+				<a routerLink="/create" style="color: #ffffff !important;" class="btn btn-outline-primary">Create your company</a>
+			</span>
+			<span class="navbar-text float-xs-right">
+				Already joined your team?
+				<a routerLink="/login" style="color: #ffffff !important;" class="btn btn-outline-success">Login</a>
+			</span>
+		</nav>
+	</div>
+</div>

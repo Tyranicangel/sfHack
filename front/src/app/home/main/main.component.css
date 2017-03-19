@@ -1,0 +1,37 @@
+.full-screen{
+	background: url('../../../assets/background.png');
+	background-size: cover;
+}
+.nav-brand{
+	float: none;
+}
+
+.nav-pills a{
+	color:#ffffff;
+}
+.nav-item:hover{
+	background: #454545
+}
+.smallhead{
+	font-size: 2.5rem;
+}
+
+@media (min-width: 544px) {
+	.nav-brand{
+		float: left;
+	}
+}
+
+@media (min-width: 768px) {
+	.smallhead{
+		font-size: 3.5rem;
+	}
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}

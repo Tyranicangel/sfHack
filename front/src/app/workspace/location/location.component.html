@@ -1,0 +1,84 @@
+<nav class="navbar navbar-light">
+	<span class="navbar-brand">
+		Locations
+	</span>
+	<span class="navbar-text float-xs-right">
+		<button class="btn btn-outline-success" (click)="add()">Add</button>
+	</span>
+</nav>
+<div class="container">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>SNo</th>
+				<th>Name</th>
+				<th>City</th>
+				<th>State</th>
+				<th>Address</th>
+				<th>Phone No</th>
+				<th>Country</th>
+				<th>Edit</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let l of locationlist;let i=index">
+				<td>{{i+1}}</td>
+				<td>{{l.name}}</td>
+				<td>{{l.city}}</td>
+				<td>{{l.state}}</td>
+				<td>{{l.address}}</td>
+				<td>{{l.phoneno}}</td>
+				<td>{{l.country}}</td>
+				<td><button class="btn btn-outline-info" (click)="edit(l)">Edit</button></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Location</h4>
+      </div>
+       <form (ngSubmit)="save()">
+      <div class="modal-body">
+        <div class="container">
+    		<div class="form-group">
+				<label for="" class="form-label">Name</label>
+				<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="location.name" required>
+    		</div>
+    		<div class="form-group">
+				<label for="" class="form-label">City</label>
+				<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="location.city" required>
+    		</div>
+    		<div class="form-group">
+				<label for="" class="form-label">State</label>
+				<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="location.state" required>
+    		</div>
+    		<div class="form-group">
+				<label for="" class="form-label">Address</label>
+				<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="location.address" required>
+    		</div>
+    		<div class="form-group">
+				<label for="" class="form-label">Phone No</label>
+				<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="location.phoneno" required>
+    		</div>
+    		<div class="form-group">
+				<label for="" class="form-label">Country</label>
+				<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="location.country" required>
+    		</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.hide()">Close</button>
+        <button type="button" *ngIf="location._id!=''" class="btn btn-danger" (click)="remove()">Remove</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+

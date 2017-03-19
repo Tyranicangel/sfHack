@@ -1,0 +1,58 @@
+<div class="container">
+	<div class="row" style="margin:50px 100px; padding:50px 100px; border:1px solid #bababa;">
+		<div class="col col-xs-4">
+			<div class="container-fluid">
+				<div class="outer" [ngClass]="{active:stat=='dr'}">
+					<div class="inner bg-danger"></div>
+					<div class="textual">DR Mode</div>
+				</div>
+			</div>
+		</div>
+		<div class="col col-xs-4">
+			<div class="container-fluid">
+				<div class="outer" [ngClass]="{active:stat=='attn'}">
+					<div class="inner bg-warning"></div>
+					<div class="textual">Attention Needed</div>
+				</div>
+			</div>
+		</div>
+		<div class="col col-xs-4">
+			<div class="container-fluid">
+				<div class="outer" [ngClass]="{active:stat=='safe'}">
+					<div class="inner bg-success"></div>
+					<div class="textual">Safe Mode</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid" style="margin:50px 100px;padding:50px 100px;border:1px solid #bababa">
+		<div class="row bordered">
+			<div class="col col-xs-2 left">Contracts</div>
+			<div class="col col-xs-10 right">
+				<div>Already expired : {{contract_exp}}</div>
+				<div>Expiring in 3 months : {{contract_3}}</div>
+				<div>Expiring in 6 months : {{contract_6}}</div>
+			</div>
+		</div>
+		<div class="row bordered">
+			<div class="col col-xs-2 left">Annual Drills</div>
+			<div class="col col-xs-10 right">
+				<div>2016 : {{tested_2016}}/{{apps}} Applications have been tested</div>
+				<div>2017 : {{tested_2017}}/{{apps}} Applications have been tested</div>
+			</div>
+		</div>
+		<div class="row bordered">
+			<div class="col col-xs-2 left">Backups</div>
+			<div class="col col-xs-10 right">
+				<div>{{backlogged}}/{{apps}} Applications have backups</div>
+			</div>
+		</div>
+		<div class="row bordered">
+			<div class="col col-xs-2 left">DR Triggers</div>
+			<div class="col col-xs-10 right">
+				<div>2016 : {{trigger_2016}}</div>
+				<div>2017 : {{trigger_2017}}</div>
+			</div>
+		</div>
+	</div>
+</div>

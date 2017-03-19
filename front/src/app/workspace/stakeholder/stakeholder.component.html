@@ -1,0 +1,92 @@
+<nav class="navbar navbar-light">
+	<span class="navbar-brand">
+		Stakeholders
+	</span>
+	<span class="navbar-text float-xs-right">
+		<button class="btn btn-outline-success" (click)="add()">Add</button>
+	</span>
+</nav>
+<div class="container">
+	<table class="table" *ngIf="stakeholders.length>0">
+		<thead class="thead-default">
+			<tr>
+				<th>#</th>
+				<th>Company</th>
+				<th>Role</th>
+				<th>Name</th>
+				<th>Office Email</th>
+				<th>Personal Email</th>
+				<th>Phone</th>
+				<th>Edit</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let s of stakeholders;let i=index">
+				<th scope="row">{{i+1}}</th>
+				<td>{{s.companyname}}</td>
+				<td>{{rolelist[s.role]}}</td>
+				<td>{{s.name}}</td>
+				<td>{{s.officeemail}}</td>
+				<td>{{s.personalemail}}</td>
+				<td>{{s.phone}}</td>
+				<td>
+					<button type="button" class="btn btn-outline-info btn-sm" (click)="edit(s)">Edit</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Stakeholder</h4>
+      </div>
+       <form (ngSubmit)="save()">
+      <div class="modal-body">
+        <div class="container">
+        		<div class="form-group">
+					<label for="companyName">Company Name</label>
+					<input type="text" class="form-control" id="companyName" [ngModelOptions]="{standalone: true}" [(ngModel)]="stakeholder.companyname" required>
+				</div>
+				<div class="form-group">
+					<label for="companyName">Role</label>
+					<select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="stakeholder.role" required>
+						<option value="">Select</option>
+						<option value="1">Executive</option>
+						<option value="2">Business owner</option>
+						<option value="3">Company DR Lead(s)</option>
+						<option value="4">Company IT SME(s)</option>
+						<option value="5">Vendor SME(s)</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="companyName">Name</label>
+					<input type="text" class="form-control" id="companyName" [ngModelOptions]="{standalone: true}" [(ngModel)]="stakeholder.name" required>
+				</div>
+				<div class="form-group">
+					<label for="companyName">Office Email</label>
+					<input type="email" class="form-control" id="companyName" [ngModelOptions]="{standalone: true}" [(ngModel)]="stakeholder.officeemail" required>
+				</div>
+				<div class="form-group">
+					<label for="companyName">Personal Email</label>
+					<input type="email" class="form-control" id="companyName" [ngModelOptions]="{standalone: true}" [(ngModel)]="stakeholder.personalemail" required>
+				</div>
+				<div class="form-group">
+					<label for="companyName">Phone</label>
+					<input type="text" class="form-control" id="companyName" [ngModelOptions]="{standalone: true}" [(ngModel)]="stakeholder.phone" required>
+				</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.hide()">Close</button>
+        <button *ngIf="stakeholder._id!=''" type="button" class="btn btn-danger" (click)="remove()">Remove</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

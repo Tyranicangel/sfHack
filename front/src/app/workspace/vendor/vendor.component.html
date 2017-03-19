@@ -1,0 +1,113 @@
+<nav class="navbar navbar-light">
+	<span class="navbar-brand">
+		Vendors
+	</span>
+	<span class="navbar-text float-xs-right">
+		<button class="btn btn-outline-success" (click)="add()">Add</button>
+	</span>
+</nav>
+<div class="container">
+	<table class="table" *ngIf="vendors.length>0">
+		<thead class="thead-default">
+			<tr>
+				<th>#</th>
+				<th>Company</th>
+				<th>Support details</th>
+				<th>Contract details</th>
+				<th>Contact details</th>
+				<th>Edit</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let v of vendors;let i=index">
+				<th scope="row">{{i+1}}</th>
+				<td>{{v.vendorcompany}}</td>
+				<td>
+					{{termslist[v.supportterms]}}
+				</td>
+				<td *ngIf="v.contract=='false'">None</td>
+				<td *ngIf="v.contract=='true'">
+					<span *ngIf="v.contractdocument" class="row"><b>Document : </b><a download href="http://localhost:3000/{{v.contractdocument}}">Download</a></span>
+					<span *ngIf="v.contractexpiry" class="row"><b>Expiry : </b>{{convert(v.contractexpiry)}}</span>
+				</td>
+				<td>
+					<span class="row"><b>Name : </b>{{v.managername}}</span>
+					<span class="row"><b>Phone : </b>{{v.managerphone}}</span>
+					<span class="row"><b>Email : </b>{{v.manageremail}}</span>
+				</td>
+				<td>
+					<button type="button" class="btn btn-outline-info btn-sm" (click)="edit(v)">Edit</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Vendor</h4>
+      </div>
+       <form (ngSubmit)="save()">
+      <div class="modal-body">
+        <div class="container">
+        		<div class="form-group">
+					<label for="companyName">Company Name</label>
+					<input type="text" class="form-control" id="companyName" [ngModelOptions]="{standalone: true}" [(ngModel)]="vendor.vendorcompany" required>
+				</div>
+				<div class="form-group">
+					<label for="companyName">Support term</label>
+					<select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="vendor.supportterms" required>
+						<option value="1">24/7</option>
+						<option value="2">Business hours</option>
+						<option value="3">Limited support</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Contract  </label>
+					<label class="form-check-inline">
+						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="vendor.contract" required> Yes
+					</label>
+					<label class="form-check-inline">
+						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="false" [ngModelOptions]="{standalone: true}" [(ngModel)]="vendor.contract" required> No
+					</label>
+				</div>
+				<div class="form-group" *ngIf="vendor.contract=='true'">
+					<label for="companyName">Contract document</label>
+					<input *ngIf="vendor.contractdocument==''" type="file" class="form-control" (change)="fileChangeEvent($event)">
+					<span *ngIf="vendor.contractdocument!=''">
+						<a download href="http://localhost:3000/{{vendor.contractdocument}}">Download</a>
+						&nbsp;&nbsp;
+						<button type="button" class="btn btn-outline-danger btn-sm" (click)="removedoc()"><span aria-hidden="true">&times;</span></button>
+					</span>
+				</div>
+				<div class="form-group" *ngIf="vendor.contract=='true'">
+					<label for="companyName">Contract expiry</label>
+					<input type="date" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="vendor.contractexpiry">
+				</div>
+				<div class="form-group">
+					<label for="">Manager</label>
+					<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="vendor.managername" required>
+				</div>
+				<div class="form-group">
+					<label for="">Phone</label>
+					<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="vendor.managerphone" required>
+				</div>
+				<div class="form-group">
+					<label for="">Email</label>
+					<input type="email" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="vendor.manageremail" required>
+				</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.hide()">Close</button>
+        <button *ngIf="vendor._id!=''" type="button" class="btn btn-danger" (click)="remove()">Remove</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
